@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: rijbewijsb-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rijbewijs
+      POSTGRES_PASSWORD: rijbewijs
+      POSTGRES_DB: rijbewijsb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rijbewijs -d rijbewijsb"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rijbewijsb-app
+    restart: unless-stopped
+    ports:
+      - "3022:3022"
+    environment:
+      DATABASE_URL: "postgresql://rijbewijs:rijbewijs@db:5432/rijbewijsb?schema=public"
+      NODE_ENV: production
+      PORT: "3022"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
