@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "crypto";
 
 const COOKIE_NAME = "rb_session";
 
@@ -9,7 +8,9 @@ export function middleware(req: NextRequest) {
   // in dezelfde request, en bewaar hem in de browser.
   if (existing) return NextResponse.next();
 
-  const key = randomUUID();
+  // crypto.randomUUID() is beschikbaar als globale Web Crypto API in de
+  // Edge runtime (geen Node 'crypto' import, die werkt niet in middleware).
+  const key = crypto.randomUUID();
   req.cookies.set(COOKIE_NAME, key);
   const res = NextResponse.next({ request: { headers: req.headers } });
   res.cookies.set(COOKIE_NAME, key, {

@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { randomUUID } from "crypto";
 
 const COOKIE_NAME = "rb_session";
 
@@ -11,7 +10,7 @@ export async function getSessionKey(): Promise<string> {
   const store = await cookies();
   const existing = store.get(COOKIE_NAME)?.value;
   if (existing) return existing;
-  const key = randomUUID();
+  const key = crypto.randomUUID();
   // In Server Components kan schrijven falen; daarom try/catch.
   try {
     store.set(COOKIE_NAME, key, {
