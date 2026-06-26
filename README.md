@@ -41,7 +41,7 @@ cookie en in de database.
 | Database     | **PostgreSQL**                                     |
 | Styling      | **Tailwind CSS** + shadcn-stijl componenten        |
 | Iconen       | lucide-react                                       |
-| Deployment   | **Docker Compose** (app op poort **3022**)         |
+| Deployment   | **Docker Compose** (app op poort **3023**)         |
 
 ---
 
@@ -61,7 +61,7 @@ Dit doet alles automatisch:
 4. vult de database met seed-data (theorielessen, 200+ vragen, verkeersborden);
 5. start de app.
 
-Open vervolgens **http://localhost:3022**.
+Open vervolgens **http://localhost:3023**.
 
 De seed is **idempotent**: bij een herstart wordt de database niet overschreven
 en blijft je voortgang bewaard. Wil je de database volledig opnieuw vullen, zet
@@ -106,21 +106,21 @@ Vereist: Node.js 20+ en een bereikbare PostgreSQL-database.
    npm run db:seed     # vult de database met inhoud
    ```
 
-4. **Ontwikkelserver starten** (op poort 3022)
+4. **Ontwikkelserver starten** (op poort 3023)
 
    ```bash
    npm run dev
    ```
 
-   Open **http://localhost:3022**.
+   Open **http://localhost:3023**.
 
 ### Handige scripts
 
 | Script               | Wat het doet                                            |
 | -------------------- | ------------------------------------------------------- |
-| `npm run dev`        | Ontwikkelserver op poort 3022                            |
+| `npm run dev`        | Ontwikkelserver op poort 3023                            |
 | `npm run build`      | Productiebuild (incl. `prisma generate`)                |
-| `npm start`          | Productieserver op poort 3022                            |
+| `npm start`          | Productieserver op poort 3023                            |
 | `npm run db:push`    | Schema naar de database pushen                           |
 | `npm run db:seed`    | Seed-data laden (slaat over indien al aanwezig)          |
 | `npm run db:reset`   | Database leegmaken én opnieuw vullen                     |
@@ -184,7 +184,7 @@ src/
   components/            # UI- en feature-componenten
   lib/                   # prisma, examenlogica, vraagselectie, helpers
 Dockerfile
-docker-compose.yml       # app (poort 3022) + postgres
+docker-compose.yml       # app (poort 3023) + postgres
 ```
 
 ## 📝 Licentie & gebruik

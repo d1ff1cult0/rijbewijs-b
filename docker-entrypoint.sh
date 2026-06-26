@@ -19,5 +19,5 @@ echo "✓  Databaseschema is up-to-date."
 echo "🌱  Seed-data laden (overslaan indien al aanwezig)..."
 npx prisma db seed || echo "⚠️  Seed overgeslagen."
 
-echo "🚀  Server starten op poort ${PORT:-3022}..."
+echo "🚀  Server starten op poort ${PORT:-3023}..."
 exec node server.js

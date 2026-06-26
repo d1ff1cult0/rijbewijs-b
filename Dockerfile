@@ -8,24 +8,28 @@ RUN apt-get update -y \
   && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
+# Tolereer een ontbrekende checksum bij het downloaden van de Prisma engines
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 
 # ------------------------------------------------------------------ deps
 FROM base AS deps
 COPY package.json package-lock.json* ./
-# Engines worden tijdens install/generate gedownload (internet nodig bij build)
-RUN npm ci
+# --ignore-scripts: de postinstall (prisma generate) draaien we apart in de
+# builder-stap, zodat 'npm ci' niet faalt en de stappen duidelijk gescheiden zijn.
+RUN npm ci --ignore-scripts
 
 # ------------------------------------------------------------------ builder
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Genereer de Prisma client (engines worden hier gedownload — internet nodig)
 RUN npx prisma generate
-RUN npm run build
+RUN npx next build
 
 # ------------------------------------------------------------------ runner
 FROM base AS runner
 ENV NODE_ENV=production
-ENV PORT=3022
+ENV PORT=3023
 ENV HOSTNAME=0.0.0.0
 
 # Next.js standalone output
@@ -39,5 +43,5 @@ COPY --from=builder /app/package.json ./package.json
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
 
-EXPOSE 3022
+EXPOSE 3023
 ENTRYPOINT ["./docker-entrypoint.sh"]

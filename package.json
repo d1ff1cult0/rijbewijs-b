@@ -4,9 +4,9 @@
   "private": true,
   "description": "Belgisch Rijbewijs B - Theorie & Oefenplatform",
   "scripts": {
-    "dev": "next dev -p 3022",
+    "dev": "next dev -p 3023",
     "build": "prisma generate && next build",
-    "start": "next start -p 3022",
+    "start": "next start -p 3023",
     "lint": "next lint",
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
